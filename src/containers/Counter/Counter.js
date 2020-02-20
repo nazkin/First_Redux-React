@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import CounterControl from '../../components/CounterControl/CounterControl';
 import CounterOutput from '../../components/CounterOutput/CounterOutput';
 import {connect} from 'react-redux';
+import * as actionTypes from '../../store/actions';
 
 class Counter extends Component {
     // state = {
@@ -35,7 +36,7 @@ class Counter extends Component {
                 <CounterControl label="Add 5" clicked={this.props.onAddition}  />
                 <CounterControl label="Subtract 5" clicked={this.props.onSubtraction}  />
                 <hr />
-                <button onClick={this.props.onStoreValue}>Store Value</button>
+                <button onClick={()=> this.props.onStoreValue(this.props.ctr)}>Store Value</button>
                 <ul>
                     {this.props.storedResults.map(res=> (
                         <li key={res.id} onClick={()=> this.props.onDeleteValue(res.id)}>{res.val}</li>
@@ -47,19 +48,19 @@ class Counter extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        onIncrement: ()=> dispatch({type: 'INCREMENT'}),
-        onDecrement: ()=> dispatch({type: 'DECREMENT'}),
-        onAddition: ()=> dispatch({type: 'ADD', value: 5}),
-        onSubtraction: ()=> dispatch({type: 'SUBTRACT', value: 5}),
-        onStoreValue: ()=> dispatch({type: 'STORE_VAL'}),
-        onDeleteValue: (id)=> dispatch({type: 'DELETE_VAL', selectValId: id})
+        onIncrement: ()=> dispatch({type: actionTypes.INCREMENT}),
+        onDecrement: ()=> dispatch({type: actionTypes.DECREMENT}),
+        onAddition: ()=> dispatch({type: actionTypes.ADD, value: 5}),
+        onSubtraction: ()=> dispatch({type: actionTypes.SUBTRACT, value: 5}),
+        onStoreValue: (result)=> dispatch({type: actionTypes.STORE_VAL, result: result}),
+        onDeleteValue: (id)=> dispatch({type: actionTypes.DELETE_VAL, selectValId: id})
       
     };
 }
 const mapStateToProps =(state)=> {
     return{
-        ctr: state.counter,
-        storedResults: state.result
+        ctr: state.counter.counter,
+        storedResults: state.result.result
     }
 }
 
